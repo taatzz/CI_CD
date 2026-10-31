@@ -6,7 +6,9 @@ RUN apt-get update \
 
 WORKDIR /app
 COPY . .
+# 关键修改：通过 CMAKE_EXE_LINKER_FLAGS 传递静态链接选项
 RUN cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_EXE_LINKER_FLAGS="-static-libstdc++ -static-libgcc" \
     && cmake --build build --target app -j
 
 # ---- 运行阶段 ----
