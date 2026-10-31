@@ -1,5 +1,5 @@
 # ---- 构建阶段 ----
-FROM gcc:13 AS build
+FROM gcc:12 AS build
 RUN apt-get update \
     && apt-get install -y --no-install-recommends cmake make \
     && rm -rf /var/lib/apt/lists/*
@@ -8,7 +8,6 @@ WORKDIR /app
 COPY . .
 # 关键修改：通过 CMAKE_EXE_LINKER_FLAGS 传递静态链接选项
 RUN cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_EXE_LINKER_FLAGS="-static-libstdc++ -static-libgcc" \
     && cmake --build build --target app -j
 
 # ---- 运行阶段 ----
